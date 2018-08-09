@@ -87,11 +87,11 @@ public class ResponsablesDAO extends ConexionPSQL {
         int i = 1;
         sentencia.setString(i++, responsable.getCodtiporesposanble());
         sentencia.setString(i++, responsable.getIdentificacion());
-        sentencia.setString(i++, responsable.getRazonsocial().toUpperCase());
+        sentencia.setString(i++, responsable.getRazonsocial().toUpperCase());//transformar una cadena a mayúsculas
         sentencia.setString(i++, responsable.getCodigociudad());
         sentencia.setString(i++, responsable.getDireccion().toUpperCase());
         sentencia.setString(i++, responsable.getTelefono());
-        sentencia.setString(i++, responsable.getCorreo().toUpperCase());
+        sentencia.setString(i++, responsable.getCorreo().toLowerCase());//minusculas
         res = sentencia.executeUpdate();
         cerrarConexion();
         return res;
