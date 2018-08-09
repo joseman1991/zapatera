@@ -15,6 +15,7 @@ import java.util.List;
 /**
  *
  * @author JOSE-MA
+ * Data Access Objets
  */
 public class ArticuloDAO extends ConexionPSQL {
 
