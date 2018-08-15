@@ -492,7 +492,7 @@ public class CtrlEgresos {
 
         vistaEgreso.registrar.addActionListener((ActionEvent e) -> {
             if (vistaEgreso.responsable.getText().equals("")) {
-                JOptionPane.showMessageDialog(vistaEgreso, "Selecciona un beneficiario", "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(vistaEgreso, "Selecciona un cliente", "Error", JOptionPane.ERROR_MESSAGE);
             } else {
                 java.util.Date fa = new java.util.Date();
                 fa = new java.util.Date(formatearFecha(fa));
@@ -604,7 +604,7 @@ public class CtrlEgresos {
                     }
                 }
             }
-        });
+        }); 
 
         vistaEgreso.cancelar.addActionListener((ActionEvent e) -> {
             vistaEgreso.dispose();
