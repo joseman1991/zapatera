@@ -815,7 +815,22 @@ end if;
 $$
 language plpgsql;
 
- 
+ select max(numerofactura) from factura;
+ select * from factura;
+ -------------------------------------------------------------------------------------------------------------------------
+
+ create or replace function getNumeroF() returns text as
+ $$
+ declare
+ num bigint;
+ begin
+  select max(numerofactura) into num from factura where codtiporesponsable='C';
+  return TRIM(to_char(num+1,'000000000'));
+ end
+ $$
+ language plpgsql;
+
+ --select getNumeroF();
 
 --DELECT FROM detallemovimiento
 --SELECT  insertarDetalle(2, '000001', 1, 2, 4.5) ;

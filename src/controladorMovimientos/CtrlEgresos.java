@@ -9,6 +9,7 @@ import jTextFieldAutoCOmplete.Element;
 import jTextFieldAutoCOmplete.Predictor;
 import jTextFieldAutoCOmplete.PredictorException;
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.FocusAdapter;
@@ -37,6 +38,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.mail.MessagingException;
 import javax.swing.JFormattedTextField;
+import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JSpinner;
 import javax.swing.JTextField;
@@ -75,6 +77,8 @@ import vistaMovimiento.Articulo;
 import vistaMovimiento.Responsable;
 
 public class CtrlEgresos {
+
+    private FacturaDAO fdao;
 
     private final List<Detallemovimiento> listaDetelle;
 
@@ -131,6 +135,8 @@ public class CtrlEgresos {
         moviDAO = new MovimientoDAO();
         tipoMoviDAO = new TipomovimientoDAO();
 
+        fdao = new FacturaDAO();
+
         listaDetelle = new ArrayList<>();
         frameModal = JOptionPane.getFrameForComponent(vistaEgreso);
 
@@ -159,6 +165,8 @@ public class CtrlEgresos {
         vistaEgreso.costo.setEnabled(false);
         vistaEgreso.txtCantidad.setEnabled(false);
         try {
+            vistaEgreso.nFactura.setEnabled(false);
+            vistaEgreso.nFactura.setText(fdao.obtenerNumF());
             tipoMoviDAO.obtnerListaDetalleMov("E");
             listaTipoMov = tipoMoviDAO.listaTipoMov;
             for (int i = 0; i < tipoMoviDAO.listaTipoMov.size(); i++) {
@@ -176,6 +184,16 @@ public class CtrlEgresos {
         vistaEgreso.setVisible(true);
         inicializarPredictor();
         eventosPredictor();
+    }
+
+    private void cursorCargando(JInternalFrame jif) {
+        Cursor cursor = new Cursor(Cursor.WAIT_CURSOR);
+        jif.setCursor(cursor);
+    }
+
+    private void cursorNomal(JInternalFrame jif) {
+        Cursor cursor = new Cursor(Cursor.DEFAULT_CURSOR);
+        jif.setCursor(cursor);
     }
 
     private void inicializarPredictor() {
@@ -521,6 +539,7 @@ public class CtrlEgresos {
                                 Connection con = null;
                                 long id = 0;
                                 try {
+                                    cursorCargando(vistaEgreso);
                                     mov.setTipomovimiento(tipoMov);
                                     mov.setNaturaleza(vistaEgreso.Naturaleza.getText().charAt(0));
                                     mov.setCodusuario(usuario.getCodusuario());
@@ -553,7 +572,7 @@ public class CtrlEgresos {
                                     vistaEgreso.costo.setEnabled(false);
                                     vistaEgreso.eliminar.setEnabled(false);
                                     dt.addRow(new Object[]{});
-                                    
+
                                     con.commit();
                                 } catch (SQLException ex) {
                                     JOptionPane.showMessageDialog(vistaEgreso, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
@@ -573,9 +592,11 @@ public class CtrlEgresos {
                                             System.out.println(String.format("codm %d codf%d ", id, codf));
                                             generarReporte(codf);
                                             responsable = null;
+                                            vistaEgreso.nFactura.setText(fdao.obtenerNumF());
                                         } catch (SQLException ex1) {
                                             JOptionPane.showMessageDialog(vistaEgreso, ex1.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
                                         }
+                                        cursorNomal(vistaEgreso);
                                     }
                                 }
                             }
@@ -694,7 +715,7 @@ public class CtrlEgresos {
         vistaEgreso.txtCantidad.addChangeListener((ChangeEvent e) -> {
             int row = vistaEgreso.TablaDetalle.getSelectedRow();
             if (row >= 0 && row != vistaEgreso.TablaDetalle.getRowCount() - 1) {
-                SpinnerNumberModel mo = (SpinnerNumberModel) vistaEgreso.txtCantidad.getModel();                
+                SpinnerNumberModel mo = (SpinnerNumberModel) vistaEgreso.txtCantidad.getModel();
                 vistaEgreso.TablaDetalle.setValueAt(vistaEgreso.txtCantidad.getValue(), row, 1);
                 mostrarStock(vistaEgreso.TablaDetalle.getValueAt(fila, 0).toString(), vistaEgreso.TablaDetalle.getValueAt(fila, 1).toString());
             }
@@ -864,9 +885,6 @@ public class CtrlEgresos {
         this.usuario = usuario;
     }
 
-    
-     
-    
     private void spinerModel(JSpinner js) {
         double min = 0.00;
         double value = 0.00;

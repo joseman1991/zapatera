@@ -45,6 +45,18 @@ public class FacturaDAO extends ConexionPSQL {
         cerrarConexion();
         return d;
     }
+    
+    public String obtenerNumF() throws SQLException {
+        abrirConexion();
+        procedimiento = conexion.prepareCall("{call getNumeroF()}");
+        String d = null;
+        resultado = procedimiento.executeQuery();
+        if (resultado.next()) {
+            d = resultado.getString(1);
+        }
+        cerrarConexion();
+        return d;
+    }
 
     public DataSet getFacturas(Date fechainicio, Date fechafin) throws SQLException {
         DataSet dt ;
