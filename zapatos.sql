@@ -52,13 +52,7 @@ begin
 end
 $$language plpgsql;
 
-select getDomingo();
-
-select * from factura f inner join movimientos m on m.codmovimiento=f.codmovimiento where naturaleza = 'E' and fechafactura between getdomingo() and current_date;
-select codfactura,numerofactura, r.razonsocial,f.concepto,f.totalfactura
-from factura f inner join movimientos m on m.codmovimiento=f.codmovimiento 
-inner join responsables r on r.codtiporesponsable=f.codtiporesponsable and r.identificacion=f.identificacion
-where naturaleza = 'E' and fechafactura between getdomingo() and current_date;
+ 
 
 
 ------------------------------------------------------------------------------------------------------------------------------------------------------
