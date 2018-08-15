@@ -5,6 +5,8 @@ public class VentanaInicial extends javax.swing.JFrame {
     public VentanaInicial() {
         initComponents();
     }
+    
+    
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -41,6 +43,7 @@ public class VentanaInicial extends javax.swing.JFrame {
         mFactura = new javax.swing.JMenu();
         mFventa = new javax.swing.JMenuItem();
         mFcompra = new javax.swing.JMenuItem();
+        mReventa = new javax.swing.JMenuItem();
         menResponsable = new javax.swing.JMenu();
         menAñadirRes = new javax.swing.JMenuItem();
         menActuaRes = new javax.swing.JMenuItem();
@@ -285,6 +288,9 @@ public class VentanaInicial extends javax.swing.JFrame {
         mFcompra.setText("Factura de Compras");
         mFactura.add(mFcompra);
 
+        mReventa.setText("Reporte de Ventas");
+        mFactura.add(mReventa);
+
         menBusPro.add(mFactura);
 
         menResponsable.setText("Responsables");
@@ -375,6 +381,7 @@ public class VentanaInicial extends javax.swing.JFrame {
     public javax.swing.JMenu mFactura;
     public javax.swing.JMenuItem mFcompra;
     public javax.swing.JMenuItem mFventa;
+    public javax.swing.JMenuItem mReventa;
     public javax.swing.JMenuItem menActArt;
     public javax.swing.JMenuItem menActuaRes;
     public javax.swing.JMenuItem menActualizar;

@@ -48,6 +48,7 @@ import vistaUsuarios.login;
 import vistas_kardex.kardex;
 import controladorArticulo.controladorListaArticulo;
 import controladorConexion.ctrlConexion;
+import controladorFactura.ControloladorFactura;
 import controladorMovimientos.Reportes;
 import java.awt.BasicStroke;
 import java.awt.Color;
@@ -70,6 +71,7 @@ import modelo.EmpresaDAO;
 import modelo.Provincia;
 import modelo.ProvinciaDAO;
 import vistaArticulo.Balance;
+import vistaFacturas.Ventas;
 import vistaReportes.vista_reporte;
 
 /**
@@ -100,6 +102,9 @@ public class mainControler {
     private Vista_Usuario vista_usuario;
     private ctrl_Usuario ctrl_registro;
 
+    private Ventas vistaVentas;
+    private ControloladorFactura controladorFactura;
+    
     private ctrl_responsable ctrl_responsable;
     private ctrl_responsableAct ctrl_responsable2;
     private ctrl_responsableElimi ctrl_responsable3;
@@ -525,6 +530,19 @@ public class mainControler {
             cursorNomal(vista_ventanaPrincipal);
 
         });
+        
+        vista_ventanaPrincipal.mReventa.addActionListener((ActionEvent e) -> {
+            cursorCargando(vista_ventanaPrincipal.mReventa);
+            cursorCargando(vista_ventanaPrincipal.escritorio);
+            cursorCargando(vista_ventanaPrincipal);
+            cerrarVistas();
+           inicializaVentas();
+            controladorFactura.inicarVentas();
+            cursorNomal(vista_ventanaPrincipal.mReventa);
+            cursorNomal(vista_ventanaPrincipal.escritorio);
+            cursorNomal(vista_ventanaPrincipal);
+
+        });
         vista_ventanaPrincipal.reportes.addActionListener((ActionEvent e) -> {
             cursorCargando(vista_ventanaPrincipal.reportes);
             cursorCargando(vista_ventanaPrincipal.escritorio);
@@ -650,7 +668,6 @@ public class mainControler {
                 balance.dispose();
             }
         }
-
     }
 
     private void inicializarLogin() {
@@ -699,6 +716,7 @@ public class mainControler {
                         vista_ventanaPrincipal.menUsuario.setVisible(true);
                         vista_ventanaPrincipal.add_palabra.setVisible(true);
                         vista_ventanaPrincipal.mFactura.setVisible(true);
+                        vista_ventanaPrincipal.mReventa.setVisible(true);
                         switch (usuario.getCodperfiles()) {
                             case 1:
                                 vista_ventanaPrincipal.Usuario.setEnabled(true);
@@ -737,6 +755,13 @@ public class mainControler {
         ctrl_kardex = new controlador_kardex(vista_kardex);
         vista_ventanaPrincipal.escritorio.add(vista_kardex);
         vista_kardex.setLocation(vista_ventanaPrincipal.escritorio.getWidth() / 2 - vista_kardex.getWidth() / 2, 15);
+    }
+    private void inicializaVentas() {
+        vistaVentas = null;
+        vistaVentas = new Ventas();
+        controladorFactura = new ControloladorFactura(vistaVentas);
+        vista_ventanaPrincipal.escritorio.add(vistaVentas);
+        vistaVentas.setLocation(vista_ventanaPrincipal.escritorio.getWidth() / 2 - vistaVentas.getWidth() / 2, 15);
     }
 
     private void inicializareporte() {
@@ -938,6 +963,7 @@ public class mainControler {
         vista_ventanaPrincipal.menElimi.setVisible(false);
         vista_ventanaPrincipal.add_palabra.setVisible(false);
         vista_ventanaPrincipal.mFactura.setVisible(false);
+        vista_ventanaPrincipal.mReventa.setVisible(false);
     }
 
     public void IniciarVentana() {

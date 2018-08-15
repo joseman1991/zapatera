@@ -30,7 +30,7 @@ public class programa {
             ventanaP.setLocationRelativeTo(null);
             ventanaP.setExtendedState(JFrame.MAXIMIZED_BOTH);
             ventanaP.pack();
-            inicio.animar();
+//            inicio.animar();
             inicio.IniciarVentana();
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
             System.err.println(ex.getMessage());

@@ -36,6 +36,31 @@ DROP TABLE IF EXISTS imagenes;
 
 
 
+
+
+
+create or replace function getDomingo()  returns date as
+$$
+declare
+dia int;
+fecha date;
+s varchar;
+begin
+ select extract(isodow from current_date) into dia;
+ select current_date -  dia  into fecha;
+ return fecha;
+end
+$$language plpgsql;
+
+select getDomingo();
+
+select * from factura f inner join movimientos m on m.codmovimiento=f.codmovimiento where naturaleza = 'E' and fechafactura between getdomingo() and current_date;
+select codfactura,numerofactura, r.razonsocial,f.concepto,f.totalfactura
+from factura f inner join movimientos m on m.codmovimiento=f.codmovimiento 
+inner join responsables r on r.codtiporesponsable=f.codtiporesponsable and r.identificacion=f.identificacion
+where naturaleza = 'E' and fechafactura between getdomingo() and current_date;
+
+
 ------------------------------------------------------------------------------------------------------------------------------------------------------
 drop sequence if exists sig_periodo;
 create sequence sig_periodo;

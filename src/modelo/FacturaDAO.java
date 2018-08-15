@@ -34,6 +34,34 @@ public class FacturaDAO extends ConexionPSQL {
         return cod;
     }
 
+    public Date obtenerDomingo() throws SQLException {
+        abrirConexion();
+        procedimiento = conexion.prepareCall("{call getDomingo()}");
+        Date d = null;
+        resultado = procedimiento.executeQuery();
+        if (resultado.next()) {
+            d = resultado.getDate(1);
+        }
+        cerrarConexion();
+        return d;
+    }
+
+    public DataSet getFacturas(Date fechainicio, Date fechafin) throws SQLException {
+        DataSet dt ;
+        abrirConexion();
+        sentencia = conexion.prepareStatement("select codfactura,numerofactura, r.razonsocial,f.concepto,f.totalfactura\n"
+                + "from factura f inner join movimientos m on m.codmovimiento=f.codmovimiento \n"
+                + "inner join responsables r on r.codtiporesponsable=f.codtiporesponsable and r.identificacion=f.identificacion\n"
+                + "where naturaleza = 'E' and fechafactura between ? and ?");
+        sentencia.setDate(1, fechainicio);
+        sentencia.setDate(2, fechafin);
+        resultado= sentencia.executeQuery();
+        dt= new DataSet();
+        dt.load(resultado);
+        cerrarConexion();
+        return dt;
+    }
+
     public DataSet obtnerFactura(Responsables re) throws SQLException {
         DataSet dt;
         abrirConexion();
@@ -55,7 +83,6 @@ public class FacturaDAO extends ConexionPSQL {
 select numerofactura, concepto, totalfactura, fechafactura from factura where codtiporesponsable='P' and identificacion='1207372002' and
 fechafactura between '2018-07-24' and '2018-07-26';
      */
-
     public DataSet obtnerFactura(Responsables re, Date fecha1, Date fecha2) throws SQLException {
         DataSet dt;
         abrirConexion();
@@ -68,24 +95,23 @@ fechafactura between '2018-07-24' and '2018-07-26';
         dt.load(resultado);
         dt = new DataSet();
         dt.load(resultado);
-        
+
         dt.setCellEditable(false);
         cerrarConexion();
         return dt;
     }
-    
-    
-    public long obtenerId(long cod) throws SQLException{
+
+    public long obtenerId(long cod) throws SQLException {
         abrirConexion();
-        sentencia= conexion.prepareStatement("select codfactura from factura where codmovimiento=?");
+        sentencia = conexion.prepareStatement("select codfactura from factura where codmovimiento=?");
         sentencia.setLong(1, cod);
-        resultado=sentencia.executeQuery();
-        long id=0;
-        if(resultado.next()){
-            id=resultado.getLong(1);
+        resultado = sentencia.executeQuery();
+        long id = 0;
+        if (resultado.next()) {
+            id = resultado.getLong(1);
         }
         cerrarConexion();
         return id;
     }
-    
+
 }

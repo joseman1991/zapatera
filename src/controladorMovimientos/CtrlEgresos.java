@@ -300,7 +300,6 @@ public class CtrlEgresos {
                             vistaEgreso.costo.setEnabled(true);
                             seleccionarTdo(vistaEgreso.txtCantidad);
                         }
-
                     }
                     vistaEgreso.lbcosto.setText("Costo");
                 }
@@ -695,6 +694,7 @@ public class CtrlEgresos {
         vistaEgreso.txtCantidad.addChangeListener((ChangeEvent e) -> {
             int row = vistaEgreso.TablaDetalle.getSelectedRow();
             if (row >= 0 && row != vistaEgreso.TablaDetalle.getRowCount() - 1) {
+                SpinnerNumberModel mo = (SpinnerNumberModel) vistaEgreso.txtCantidad.getModel();                
                 vistaEgreso.TablaDetalle.setValueAt(vistaEgreso.txtCantidad.getValue(), row, 1);
                 mostrarStock(vistaEgreso.TablaDetalle.getValueAt(fila, 0).toString(), vistaEgreso.TablaDetalle.getValueAt(fila, 1).toString());
             }
@@ -864,6 +864,9 @@ public class CtrlEgresos {
         this.usuario = usuario;
     }
 
+    
+     
+    
     private void spinerModel(JSpinner js) {
         double min = 0.00;
         double value = 0.00;
